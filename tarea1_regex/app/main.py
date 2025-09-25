@@ -4,6 +4,7 @@ from .parser import parse
 from .thompson import thompson
 from .converter import afnd_to_afd
 from .matcher import find_matches
+from .utils import collect_sigma
 
 USAGE = "Uso: python -m app.main \"ER\"   (ej: python -m app.main \"a.b.c\")"
 
@@ -15,7 +16,8 @@ def main():
         ast = parse(regex)
     except Exception as e:
         print(f"Error al parsear ER: {e}"); return
-    afnd = thompson(ast, ALPHABET)
+    sigma_usado = collect_sigma(ast)
+    afnd = thompson(ast, sigma_usado)
     print(afnd.to_pretty())
     afd = afnd_to_afd(afnd)
     print(afd.to_pretty())
